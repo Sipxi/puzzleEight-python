@@ -113,7 +113,6 @@ class PuzzleEight:
             print(f"Won {chosen_node}")
             self.printReverse(self.getAllParents(chosen_node))
     
-    
     def getAllParents(self, node) -> list:
         all_parents = []
         all_parents.append(node)
@@ -122,7 +121,6 @@ class PuzzleEight:
             all_parents.append(parent)
             parent = parent.getParent()
         return all_parents
-    
     
     def printReverse(self, given_list) -> None:
         given_list.reverse()

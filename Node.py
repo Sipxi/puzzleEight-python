@@ -36,9 +36,6 @@ class Node:
                 if number != 0:
                     index_state = index2d(self.state, number)
                     index_goal = index2d(goal_state, number)
-                    #   How many numbers are misplaced, except 0
-                    
+                    #   Calculating the distance beetwen index and goal_state
                     h_value += abs(index_state[0] - index_goal[0]) + abs(index_state[1] - index_goal[1])
-                   # if index_goal != index_state:
-                     #   h_value += 1
         return h_value

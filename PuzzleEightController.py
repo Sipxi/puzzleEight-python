@@ -1,5 +1,6 @@
 import numpy as np
 import copy
+import random
 
 
 class PuzzleEightController:
@@ -24,9 +25,9 @@ class PuzzleEightController:
             moves.remove("DOWN")
         return moves
 
-    def isSolvable(self):
+    def isSolvable(self,given_arr):
         #   Copy arr because of rewriting
-        arr = copy.deepcopy(self.given_state)
+        arr = copy.deepcopy(given_arr)
         #   Convert from 2D list to list
         arr = list(np.concatenate(arr).flat)
         arr.remove(0)
@@ -38,3 +39,21 @@ class PuzzleEightController:
                     inversions += 1
         #   If inversions are odd the puzzle is solvable
         return True if inversions % 2 == 0 else False
+    
+    
+    def generateRandomPool(self) -> list:
+        numbers = [1,2,3,4,5,6,7,8,0]
+        listToGo = []
+        
+        for i in range(3):
+            listToGo.append([])
+            for j in range(3):
+                number = random.choice(numbers)
+                listToGo[i].append(number)
+                numbers.remove(number)
+                
+        if self.isSolvable(listToGo):    
+            return listToGo
+
+                
+                
