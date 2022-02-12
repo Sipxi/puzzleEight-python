@@ -1,0 +1,13 @@
+aiohttp==3.7.4.post0
+async-timeout==3.0.1
+attrs==21.4.0
+chardet==4.0.0
+colorama==0.4.4
+commonmark==0.9.1
+discord.py==1.7.3
+idna==3.3
+multidict==6.0.2
+Pygments==2.11.2
+rich==11.1.0
+typing_extensions==4.0.1
+yarl==1.7.2

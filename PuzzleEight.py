@@ -1,19 +1,21 @@
 import copy
+
+from numpy import intp
 from Node import Node
 from utils import *
 from rich import print
 from PuzzleEightController import PuzzleEightController
-
-
+import sys
+from TextGui import TextGui
 class PuzzleEight:
-    def __init__(self):
-        self.given_state = [[8, 1, 6], [4, 3, 5], [7, 2, 0]]
+    def __init__(self) -> None:
+        self.given_state = None
         self.depth = 0
-        self.nodes = [Node(self.given_state, self.depth)]
+        self.nodes = None
         self.old_nodes = []
         self.controller = PuzzleEightController()
 
-    def chooseNode(self):
+    def chooseNode(self) -> Node:
         #   Take first node from list
         chosen_node = self.nodes[0]
         #   Compare it
@@ -29,15 +31,20 @@ class PuzzleEight:
         print(f"[bold red]Chosen node: {chosen_node} ")
         return chosen_node
 
-    def isVisited(self, given_node):
+    def isVisited(self, given_node) -> bool:
         #   Check if node was already visited
         for node in self.old_nodes:
             if node.getState() == given_node.getState():
                 return True
+        #   If there is a same state = delete node
+        for node in self.nodes:
+            if node.getState() == given_node.getState():
+                self.nodes.remove(node)
+                return True
         return False
 
-    def matchMove(self, chosen_node):
-
+    def matchMove(self, chosen_node) -> None:
+    
         arr = chosen_node.getState()
         # Find the 0
         index = index2d(arr, 0)
@@ -86,8 +93,53 @@ class PuzzleEight:
             if not self.isVisited(node_to_apppend):
                 self.nodes.append(node_to_apppend)
             possible_moves.remove("DOWN")
-
-    def start(self, max_iterations=10000):
+            
+    def start(self, max_iterations = 10000):
+        gui = TextGui()
+        #   If answer is correct
+        try:
+            answer = gui.answer()
+        except:
+            print("Please, enter from number 0,1 or 2")
+            return self.start(max_iterations)
+        
+        #   Match the answer
+        if answer == 0:
+            sys.exit()
+            
+        elif answer == 1:
+            self.given_state = self.controller.generateRandomPool()
+            gui.clearScreen()
+            print("[bold yellow] Your pool is")
+            print(self.given_state)
+            time.sleep(3)
+            
+        elif answer == 2:
+            #   If user input is wrong
+            try:
+               self.given_state = gui.enterPool()
+            except:
+                print("Please, enter solvable combination")
+                time.sleep(1)
+                return self.start(max_iterations)
+            
+            #   If combination is unsolvable
+            if not self.controller.isSolvable(self.given_state):
+                print("Please, enter solvable combination")
+                time.sleep(1)
+                return self.start(max_iterations)
+        #   If user input is not
+        else:
+            print("Please, enter from number 0,1 or 2")
+            time.sleep(1)
+            return self.start(max_iterations)
+        
+        #   First node
+        self.nodes = [Node(self.given_state, self.depth)]
+        self.solve(max_iterations)
+        
+    def solve(self, max_iterations) -> None:
+            
         #   Root node
         chosen_node = self.chooseNode()
         arr = chosen_node.getState()
@@ -112,6 +164,10 @@ class PuzzleEight:
             print(timer.stop())
             print(f"Won {chosen_node}")
             self.printReverse(self.getAllParents(chosen_node))
+            
+        input("Press enter to continue...")
+        self.flush()
+        return self.start(max_iterations)
     
     def getAllParents(self, node) -> list:
         all_parents = []
@@ -127,6 +183,13 @@ class PuzzleEight:
         for i in range(len(given_list)):
                      
             print(f"{i}. {given_list[i]}")
-            
+    
+    def flush(self):
+        #   Set default values
+        self.given_state = None
+        self.depth = 0
+        self.nodes = None
+        self.old_nodes = []
+        
         
 

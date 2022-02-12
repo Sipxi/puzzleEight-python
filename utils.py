@@ -14,7 +14,6 @@ def index2d(myList, v) -> tuple:
         if v in x:
             return i, x.index(v)
 
-
 class Timer:
     def __init__(self) -> None:
         self.started_time = None

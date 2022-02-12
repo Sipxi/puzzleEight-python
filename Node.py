@@ -1,5 +1,5 @@
-from numpy import object_
 from utils import index2d, goal_state
+
 
 
 class Node:
